@@ -224,7 +224,6 @@ test.describe('Jumia Product Search and Filtering', () => {
 
 await addToCartButton.click();
 
-// Wait until Jumia confirms that the cart was actually updated.
 const cartLink = page
   .getByRole('link', {
     name: /cart/i,
@@ -279,10 +278,6 @@ test(
   async ({ page }) => {
     test.setTimeout(90_000);
 
-    // -------------------------------------------------------
-    // TC-014 / TC-015 - Search for Oraimo Powerbank
-    // -------------------------------------------------------
-
     const searchInput = await openJumia(page);
 
     await searchFor(
@@ -293,16 +288,12 @@ test(
 
     await checkEnvironment(page);
 
-    // Verify search results are displayed
     const productResults = page.locator('main article');
 
     await expect(productResults.first()).toBeVisible({
       timeout: 15_000,
     });
 
-    // -------------------------------------------------------
-    // TC-016 - Apply Oraimo brand filter
-    // -------------------------------------------------------
 
     const oraimoFilter = page
       .getByText('Oraimo', {
@@ -321,16 +312,12 @@ test(
 
     await checkEnvironment(page);
 
-    // Verify Oraimo-filtered results are displayed
     await expect(
       page.locator('main article').first()
     ).toBeVisible({
       timeout: 15_000,
     });
 
-    // -------------------------------------------------------
-    // TC-017 - Open an actual Oraimo Powerbank
-    // -------------------------------------------------------
 
     const oraimoProductLink = page
       .locator('main article a[href$=".html"]')
@@ -375,9 +362,6 @@ test(
       page.url()
     );
 
-    // -------------------------------------------------------
-    // Handle optional banner
-    // -------------------------------------------------------
 
     const closeBanner = page.getByRole(
       'button',
@@ -396,10 +380,7 @@ test(
       await closeBanner.click();
     }
 
-    // -------------------------------------------------------
-    // Verify product page contains Oraimo
-    // -------------------------------------------------------
-
+   
     const productPage = page.locator('main');
 
     await expect(productPage).toContainText(
@@ -409,10 +390,7 @@ test(
       }
     );
 
-    // -------------------------------------------------------
-    // TC-018 - Add Oraimo Powerbank to cart
-    // -------------------------------------------------------
-
+  
     const addToCartButton = page
       .getByRole('button', {
         name: /add to cart/i,
@@ -425,10 +403,8 @@ test(
       timeout: 15_000,
     });
 
-    // Add exactly once
     await addToCartButton.click();
 
-    // Optional confirmation message
     const addConfirmation = page
       .getByText(
         /added to cart|product added|successfully added/i
@@ -444,9 +420,6 @@ test(
 
     await checkEnvironment(page);
 
-    // -------------------------------------------------------
-    // Open cart
-    // -------------------------------------------------------
 
     const cartLink = page
       .getByRole('link', {
@@ -468,10 +441,6 @@ test(
     );
 
     await checkEnvironment(page);
-
-    // -------------------------------------------------------
-    // Verify Oraimo product exists in cart
-    // -------------------------------------------------------
 
     const cartMain = page.locator('main');
 

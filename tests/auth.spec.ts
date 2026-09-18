@@ -23,7 +23,6 @@ test('authenticate with Jumia', async ({ page }) => {
 
   await checkCloudflare(page);
 
-  // 2. Open Account menu
   const accountButton = page
     .getByText('Account', { exact: true })
     .first();
@@ -34,7 +33,6 @@ test('authenticate with Jumia', async ({ page }) => {
 
   await accountButton.click();
 
-  // 3. Click Sign In
   const signIn = page
     .getByText(/sign in/i)
     .first();
@@ -45,7 +43,6 @@ test('authenticate with Jumia', async ({ page }) => {
 
   await signIn.click();
 
-  // 4. Find email field
   const emailInput = page.getByRole('textbox', {
     name: /email or mobile number/i,
   });
@@ -54,7 +51,6 @@ test('authenticate with Jumia', async ({ page }) => {
     timeout: 15_000,
   });
 
-  // 5. Get email from environment variable
   const email = process.env.JUMIA_EMAIL;
 
   if (!email) {
@@ -63,12 +59,10 @@ test('authenticate with Jumia', async ({ page }) => {
     );
   }
 
-  // 6. Enter email
   await emailInput.fill(email);
 
   await expect(emailInput).toHaveValue(email);
 
-  // 7. Find Continue button
   const continueButton = page.getByRole('button', {
     name: /continue/i,
   });
@@ -81,17 +75,12 @@ test('authenticate with Jumia', async ({ page }) => {
     timeout: 10_000,
   });
 
-  // 8. Click Continue
   await continueButton.click();
 
-  // 9. Wait for Jumia's next login screen
   await page
     .waitForLoadState('domcontentloaded')
     .catch(() => {});
 
   console.log('After Continue URL:', page.url());
-
-  // 10. STOP HERE
-  // We want to see what Jumia shows next.
   await page.pause();
 });
